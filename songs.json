@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "artist_id": 1,
+    "title": "Un\'isola",
+    "lyrics": "Un\'isola persa nel mare\r\nun bar una strada due case\r\neri venuta a cercare\r\nciò che resta del cuore\r\nse l\'hai avuto mai\r\n\r\na cosa serve un pezzo di mondo\r\nabbandonato in mare\r\nse fossimo perduti nel tempo\r\nsaprei che cosa fare\r\n\r\nuna riserva naturale\r\nper fare pace con tua madre\r\neri venuta a guardare\r\nla gioventù che muore\r\nma neanche tu lo sai\r\n\r\na cosa serve il corpo tuo biondo\r\nla tua statua di sale\r\nse fossi il tuo abisso più profondo\r\nsaprei dove cercare",
+    "notes": null,
+    "spotify_url": null,
+    "mp3_audio": "songs/1740585588_04 un\'isola.mp3",
+    "privacy": 1,
+    "created_at": "2025-02-24 14:13:44",
+    "updated_at": "2025-02-26 15:59:48"
+  },
+  {
+    "id": 2,
+    "artist_id": 1,
+    "title": "Scirocco",
+    "lyrics": "Oggi è scirocco e quando è scirocco \r\nle cose funzionano male\r\nanche i pensieri si attaccano addosso \r\ncome sanguisughe\r\ne nel paese si scopre di nuovo \r\nl’affanno di respirare\r\noggi è scirocco è una cosa importante \r\nl’ha detto il telegiornale\r\n\r\npensami quando soffierà\r\npensami e una canzone suonerà per me\r\n\r\nscorre il sudore sui nervi \r\nesplode in cento male parole\r\ndette alle spalle nei vicoli in piazza \r\nin casa sul balcone\r\ne nel paese si scopre di nuovo \r\nl’affanno di respirare\r\noggi è scirocco e quando è scirocco \r\nle cose funzionano male\r\n\r\ne dal vapore fantasmi e figure \r\ndi certe persone perdute\r\noggi è scirocco ma ho freddo \r\nperché ti ho perso in un giorno d’estate",
+    "notes": "capotasto 4",
+    "spotify_url": "https://open.spotify.com/track/3fWNkUx3h96pD7wVP5Wlvc",
+    "mp3_audio": null,
+    "privacy": 0,
+    "created_at": "2025-02-25 08:23:31",
+    "updated_at": "2025-02-25 16:50:45"
+  },
+  {
+    "id": 3,
+    "artist_id": 1,
+    "title": "prova",
+    "lyrics": "rpvoa rofsdfsdf",
+    "notes": null,
+    "spotify_url": null,
+    "mp3_audio": null,
+    "privacy": 1,
+    "created_at": "2025-02-25 14:38:41",
+    "updated_at": "2025-02-25 14:38:41"
+  },
+  {
+    "id": 4,
+    "artist_id": 1,
+    "title": "A domani",
+    "lyrics": "svegliati sorridi al giorno\r\ncon le labbra che hai in un sogno\r\nportami fino in america\r\ne disegna l’alba in mezzotono\r\n\r\ntu e il mare\r\ndiecimila persone\r\nda ignorare e\r\ntu e il sole\r\nscelte da rimandare\r\na domani per sempre\r\n\r\nlimpida quella mattina\r\nscivolava via come sabbia\r\nguardami mentre galleggio\r\ne dimentico il mondo\r\ne dimentico il mondo",
+    "notes": null,
+    "spotify_url": "https://open.spotify.com/track/0tAhfZAvvSbMHEzKYxGpLC",
+    "mp3_audio": null,
+    "privacy": 1,
+    "created_at": "2025-02-27 15:36:26",
+    "updated_at": "2025-02-27 15:36:41"
+  },
+  {
+    "id": 5,
+    "artist_id": 1,
+    "title": "Maggio",
+    "lyrics": "me la sono cavata\r\ncon tre ave maria\r\nma l’antifona poi\r\nnon l’ho mica capita\r\n\r\nquindi andiamo\r\nche oggi passa il giro\r\ned e già maggio\r\nil mio mese preferito\r\n\r\nabbi pietà di questo bambino\r\nche non sa che cosa è un peccato\r\n\r\ne la nonna ha detto\r\nche oggi sono tutto santo\r\nma io non sono mai\r\nmai stato innocente\r\n\r\ndai corriamo\r\ncon la maglia rosa\r\nqui nel prato\r\nfino all’ultimo minuto",
+    "notes": null,
+    "spotify_url": "https://open.spotify.com/track/6qj0xKikBRQEC3p39y0hLN",
+    "mp3_audio": null,
+    "privacy": 1,
+    "created_at": "2025-02-27 15:39:11",
+    "updated_at": "2025-02-27 15:39:11"
+  }
+]
