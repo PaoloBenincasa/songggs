@@ -23,6 +23,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Installa le dipendenze di Composer
 RUN composer install --optimize-autoloader --no-dev
 
+# Configura Apache per servire la directory public di Laravel
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
+
+# Configura ServerName per evitare avvisi
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 # Esponi la porta 80
 EXPOSE 80
 
