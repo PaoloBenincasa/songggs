@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "public/index.php",
+        "use": "@vercel/php",
+        "config": {
+          "phpVersion": "8.0"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "public/$1"
+      }
+    ],
+    "postdeploy": {
+      "src": "php artisan storage:link",
+      "use": "@vercel/php"
+    }
+  }
+  
