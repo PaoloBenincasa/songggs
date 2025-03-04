@@ -19,6 +19,10 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
 # Configura ServerName per evitare avvisi
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+# Abilita i log di errore di Apache
+RUN echo "ErrorLog /var/log/apache2/error.log" >> /etc/apache2/apache2.conf
+RUN echo "LogLevel debug" >> /etc/apache2/apache2.conf
+
 # Imposta la directory di lavoro
 WORKDIR /var/www/html
 
