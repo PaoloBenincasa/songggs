@@ -32,8 +32,11 @@ RUN composer install --no-dev --optimize-autoloader
 # Imposta i permessi
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Esponi la porta 9000 per PHP-FPM
-EXPOSE 9000
+# Esponi la porta su cui Nginx e PHP-FPM ascolteranno
+EXPOSE 80
+
+# Copia il file di configurazione Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Comando di avvio
-CMD ["php-fpm"]
+CMD ["sh", "/start.sh"]
