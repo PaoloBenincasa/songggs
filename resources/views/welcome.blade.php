@@ -52,7 +52,7 @@
         <div class="container-fluid d-flex flex-column align-items-center bgBlack">
 
             <h4 class="mt-5">songs</h4>
-            <div class="container">
+            <div class="container mb-5">
                 <ul class="list-unstyled mt-5 w-100">
                     @foreach ($songs as $song)
                         <li class="row mb-2">
@@ -70,24 +70,5 @@
         </div>
     </main>
 
-    <section class="d-flex justify-content-center">
-        <div class="w-25">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet accusamus quo sapiente facere nisi! Possimus
-            fugiat commodi molestiae officiis aspernatur facilis autem ab esse. Libero nihil eaque suscipit eum dolorum
-            voluptas blanditiis aliquid odit quibusdam nostrum odio ad nobis nesciunt quos aut inventore vero fuga
-            minima, voluptatem nisi quia? Harum incidunt saepe dolore quod sequi maxime voluptates iusto? Dolore quo
-            molestias vitae repudiandae ea voluptatum at nesciunt? Molestias cupiditate ipsa officiis a provident
-            tenetur autem exercitationem sint impedit quos delectus, veniam aperiam quo debitis quibusdam voluptates
-            labore incidunt et. Libero, hic cupiditate? Deleniti velit officia praesentium, repellendus maiores
-            assumenda ipsum molestiae cumque accusantium facere, saepe iure excepturi quis ducimus consectetur iusto eos
-            nesciunt omnis optio! Accusantium illo quod, dignissimos voluptatum temporibus incidunt amet aliquam quae
-            maxime quo doloremque optio quidem totam ut pariatur nostrum obcaecati consequuntur similique qui. Maxime
-            tenetur dolor eligendi laborum nihil quae, excepturi quos aliquid ratione repudiandae libero, unde facere
-            corrupti! Ab exercitationem quod nihil ullam molestiae commodi eos error libero? Consequuntur voluptatem
-            tempora, nobis, ipsam voluptatibus iusto nemo magnam quos reiciendis dolores explicabo odio ipsa quasi unde
-            eos quidem recusandae. Asperiores cumque assumenda nisi repellendus nemo consequatur molestiae dolor ipsam
-            quasi ducimus! Sint, illo. Quasi, cum.
-        </div>
-    </section>
 
 </x-layout>

@@ -47,13 +47,6 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');
         });
         
-        // Fortify::redirects(function () {
-        //     return [
-        //         'login' => '/', // Cambia con la tua pagina di destinazione
-        //         'register' => '/', // Se vuoi reindirizzare anche dopo la registrazione
-        //         'logout' => '/', // Dove reindirizzare dopo il logout
-        //     ];
-        // });
-        
+    
     }
 }

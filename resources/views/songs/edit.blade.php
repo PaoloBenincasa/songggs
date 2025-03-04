@@ -1,38 +1,38 @@
 <x-layout :artist="$song->artist">
-    <div class="container">
-        <h2 class="pt-5">Modifica Canzone</h2>
-
+    <div class="container childHeight ">
+        
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
         @endif
-
+        
         <form action="{{ route('songs.update', $song) }}" method="POST" class="pb-3" enctype="multipart/form-data">
+            <h1 class="pt-5 fs-3 undergreen">edit your song</h1>
             @csrf
             @method('PUT')
 
             <div class="mb-3">
-                <label for="title" class="form-label txtGrey">Title</label>
+                <label for="title" class="form-label txtGrey">title</label>
                 <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $song->title) }}" required>
             </div>
 
             <div class="mb-3">
-                <label for="lyrics" class="form-label txtGrey">Lyrics</label>
+                <label for="lyrics" class="form-label txtGrey">lyrics</label>
                 <textarea rows="25" name="lyrics" id="lyrics" class="form-control">{{ old('lyrics', $song->lyrics) }}</textarea>
             </div>
 
             <div class="mb-3">
-                <label for="notes" class="form-label txtGrey">Notes</label>
+                <label for="notes" class="form-label txtGrey">notes</label>
                 <textarea name="notes" id="notes" class="form-control">{{ old('notes', $song->notes) }}</textarea>
             </div>
 
             <div class="mb-3">
-                <label for="spotify_url" class="form-label txtGrey">Spotify link</label>
+                <label for="spotify_url" class="form-label txtGrey">spotify link</label>
                 <input type="url" name="spotify_url" id="spotify_url" class="form-control" value="{{ old('spotify_url', $song->spotify_url) }}">
             </div>
 
@@ -40,7 +40,7 @@
                 <label for="mp3_audio" class="form-label txtGrey">MP3</label>
                 <input type="file" name="mp3_audio" id="mp3_audio" class="form-control">
                 @if ($song->mp3_audio)
-                    <p class="mt-2">File attuale: <a href="{{ asset('storage/' . $song->mp3_audio) }}" target="_blank">{{ basename($song->mp3_audio) }}</a></p>
+                    <p class="mt-2">current file: <a href="{{ asset('storage/' . $song->mp3_audio) }}" target="_blank">{{ basename($song->mp3_audio) }}</a></p>
                 @endif
             </div>
 
@@ -59,11 +59,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn-green">Update Song</button>
-            <a href="{{ route('songs.show', $song) }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn-green">update song</button>
+            <a href="{{ route('songs.show', $song) }}" class="btn btn-secondary">cancel</a>
         </form>
 
-        
     </div>
 </x-layout>
 

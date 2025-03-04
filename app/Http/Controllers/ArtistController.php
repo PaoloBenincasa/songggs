@@ -8,14 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class ArtistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
 {
     $user = Auth::user();
-    $artist = $user ? $user->artist : null; // Ottieni l'artista associato all'utente loggato
-    $artists = Artist::all(); // Ottieni tutti gli artisti
+    $artist = $user ? $user->artist : null; 
+    $artists = Artist::all(); 
 
     return view('artists.index', compact('artists', 'artist'));
 }
@@ -33,28 +31,24 @@ class ArtistController extends Controller
      */
     public function store(Request $request)
 {
-    // Validazione dell'immagine
     $request->validate([
         'name' => 'required|string|max:255',
         'bio' => 'nullable|string',
-        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240', // 10MB max
+        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240', 
     ]);
 
-    // Creazione dell'artista
     $artist = new Artist();
     $artist->name = $request->name;
     $artist->bio = $request->bio;
-    $artist->user_id = auth()->id(); // Associa l'artista all'utente loggato
+    $artist->user_id = auth()->id(); 
 
 
-    // Se è presente un'immagine, salvala nella cartella e memorizza il nome nel DB
     if ($request->hasFile('profile_picture')) {
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-        $artist->profile_picture = $path; // Save the full path
+        $artist->profile_picture = $path; 
         
     }
 
-    // Salva l'artista nel database
     $artist->save();
 
     return redirect()->route('artists.index');
@@ -67,12 +61,12 @@ class ArtistController extends Controller
     public function show(Artist $artist)
     {
         $user = Auth::user();
-        $loggedInArtist = $user ? $user->artist : null; // Ottieni l'artista associato all'utente loggato
+        $loggedInArtist = $user ? $user->artist : null; 
 
         if (auth()->check() && auth()->id() === $artist->user_id) {
-            $songs = $artist->songs; // Tutte le canzoni (pubbliche e private)
+            $songs = $artist->songs; 
         } else {
-            $songs = $artist->songs()->where('privacy', false)->get(); // Solo pubbliche
+            $songs = $artist->songs()->where('privacy', false)->get(); 
         }
 
     
@@ -95,24 +89,20 @@ class ArtistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Trova l'artista
         $artist = Artist::findOrFail($id);
 
-        // Verifica se è stato caricato un file
         if ($request->hasFile('profile_picture')) {
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-            $artist->profile_picture = $path; // Save the full path
+            $artist->profile_picture = $path; 
             
         }
 
-        // Salva gli altri dati dell'artista, se presenti
-        // Ad esempio, se stai aggiornando il nome o la bio
+       
         $artist->name = $request->input('name');
         $artist->bio = $request->input('bio');
-        // Salva l'artista
+       
         $artist->save();
 
-        // Rispondi con una risposta, ad esempio un redirect o una view
         return redirect()->route('welcome');
     }
 
@@ -130,12 +120,10 @@ class ArtistController extends Controller
 
     public function dashboard(Artist $artist)
     {
-        // Verifica che l'artista appartenga all'utente attualmente autenticato
         if ($artist->user_id !== auth()->id()) {
             abort(403, 'Non hai accesso a questa dashboard');
         }
     
-        // Passa l'artista alla vista della dashboard
         return view('artists.dashboard', compact('artist'));
     }
     

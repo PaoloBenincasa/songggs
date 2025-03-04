@@ -9,7 +9,7 @@
 
     <title>songggs</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles <!-- Aggiungi questo -->
+    @livewireStyles 
 </head>
 
 <body class="vh-100 w-100">
@@ -17,8 +17,8 @@
     <div class="slot min-vh-100 w-100">
         {{ $slot }}
     </div>
-    
-    @livewireScripts <!-- Aggiungi questo prima della chiusura del body -->
+    <x-footer />
+    @livewireScripts 
     
 </body>
 

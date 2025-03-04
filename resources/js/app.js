@@ -17,23 +17,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     const visitor = document.querySelector("visitor");
-//     const loggedIn = document.querySelector("loggedIn");
-    
-//     const visitorModal = new bootstrap.Modal(document.querySelector("visitorModal"));
-//     const loggedInModal = new bootstrap.Modal(document.querySelector("loggedInModal"));
-
-//     if (visitor) {
-//         visitor.addEventListener("click", function () {
-//             visitorModal.show();
-//         });
-//     }
-
-//     if (loggedIn) {
-//         loggedIn.addEventListener("click", function () {
-//             loggedInModal.show();
-//         });
-//     }
-// });
-

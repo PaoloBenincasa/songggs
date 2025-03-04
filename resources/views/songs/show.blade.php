@@ -1,5 +1,5 @@
 <x-layout :artist="$song->artist">
-    <div class="song-details d-flex flex-column align-items-center justify-content-evenly childHeight pb-5">
+    <div class=" d-flex flex-column align-items-center justify-content-evenly childHeight pb-5">
         <h1 class="undergreen fs-3">{{ $song->title }}</h1>
 
         @if ($song->artist)
@@ -11,22 +11,22 @@
         @endif
 
         @if ($song->spotify_url)
-        @php
-            if (preg_match('/open\.spotify\.com\/track\/([a-zA-Z0-9]+)/', $song->spotify_url, $matches)) {
-                $spotifyEmbedUrl =
-                    'https://open.spotify.com/embed/track/' . $matches[1] . '?utm_source=generator&theme=0';
-            }
-        @endphp
+            @php
+                if (preg_match('/open\.spotify\.com\/track\/([a-zA-Z0-9]+)/', $song->spotify_url, $matches)) {
+                    $spotifyEmbedUrl =
+                        'https://open.spotify.com/embed/track/' . $matches[1] . '?utm_source=generator&theme=0';
+                }
+            @endphp
 
-        @if (isset($spotifyEmbedUrl))
-            <div class="mt-3 col-10 col-md-8 col-lg-6">
-                <iframe style="border-radius:12px" src="{{ $spotifyEmbedUrl }}" width="100%" height="152"
-                    frameBorder="0" allowfullscreen=""
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy"></iframe>
-            </div>
+            @if (isset($spotifyEmbedUrl))
+                <div class="mt-3 col-10 col-md-8 col-lg-5">
+                    <iframe style="border-radius:12px" src="{{ $spotifyEmbedUrl }}" width="100%" height="152"
+                        frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                </div>
+            @endif
         @endif
-    @endif
 
 
         <div class="song-link mt-1 mb-3" data-bs-toggle="modal" data-bs-target="#studioModeModal">
@@ -83,24 +83,43 @@
             @endif
         </div>
 
-
-
         <a href="{{ route('artists.show', $song->artist->id ?? '') }}" class="song-link mt-3">
             <i class="bi bi-box-arrow-left"></i>
             profile
         </a>
-        </>
 
         <div class="modal fade" id="studioModeModal" tabindex="-1" aria-labelledby="studioModeModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content bg-dark text-white d-flex justify-content-center align-items-center">
-                    <div class="modal-body text-center w-100">
+                <div class="modal-content d-flex justify-content-center align-items-center overflow-hidden">
+                    <div class="modal-body text-center w-100 h-100 d-flex flex-column justify-content-center">
                         <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-                            data-bs-dismiss="modal" aria-label="Close"></button>
-                        <pre class="fs-2 text-uppercase  w-100" style="white-space: pre-wrap;">{{ $song->lyrics }}</pre>
+                            data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+
+                        @php
+                            // divido il testo in un array di righe
+                            //  poi lo divido a sua volta in metà arrotondando per eccesso
+                            //  riunisco le righe con implode mettendole in due variabili, la prima da 0 a metà, la seconda da metà in poi
+                            $lyricsArray = explode("\n", $song->lyrics);
+                            $half = ceil(count($lyricsArray) / 2);
+                            $lyricsLeft = implode("\n", array_slice($lyricsArray, 0, $half));
+                            $lyricsRight = implode("\n", array_slice($lyricsArray, $half));
+                        @endphp
+
+
+                        <pre class="fs-3 text-uppercase d-md-none w-100 px-1" style="white-space: pre-wrap;">{{ $song->lyrics }}</pre>
+
+
+                        <div class="d-none d-md-flex flex-md-row w-100 h-100 px-5">
+                            <pre class="fs-2 text-uppercase w-50 pe-md-3" style="white-space: pre-wrap;">{{ $lyricsLeft }}</pre>
+                            <pre class="fs-2 text-uppercase w-50 ps-md-3" style="white-space: pre-wrap;">{{ $lyricsRight }}</pre>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
+
 </x-layout>

@@ -1,9 +1,9 @@
 <x-layout>
-        <div class="container childHeight">
+        <div class="container childHeight pb-5">
             <div class="row justify-content-center pt-5">
                 <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">{{ __('Registrati') }}</div>
+                    <div class="card account-body">
+                        <div class="card-header">{{ __('sign up') }}</div>
 
                         <div class="card-body">
                             <form method="POST" action="{{ route('register') }}">
@@ -11,7 +11,7 @@
 
                                 <!-- Nome utente -->
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">{{ __('Nome') }}</label>
+                                    <label for="name" class="form-label">{{ __('name') }}</label>
                                     <input id="name" type="text"
                                         class="form-control @error('name') is-invalid @enderror" name="name"
                                         value="{{ old('name') }}" required autofocus>
@@ -24,7 +24,7 @@
 
                                 <!-- Email -->
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">{{ __('Email') }}</label>
+                                    <label for="email" class="form-label">{{ __('email') }}</label>
                                     <input id="email" type="email"
                                         class="form-control @error('email') is-invalid @enderror" name="email"
                                         value="{{ old('email') }}" required>
@@ -37,7 +37,7 @@
 
                                 <!-- Password -->
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">{{ __('Password') }}</label>
+                                    <label for="password" class="form-label">{{ __('password') }}</label>
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         required>
@@ -50,14 +50,14 @@
 
                                 <!-- Conferma Password -->
                                 <div class="mb-3">
-                                    <label for="password-confirm" class="form-label">{{ __('Conferma Password') }}</label>
+                                    <label for="password-confirm" class="form-label">{{ __('confirm password') }}</label>
                                     <input id="password-confirm" type="password" class="form-control"
                                         name="password_confirmation" required>
                                 </div>
 
                                 <!-- Nome d'arte -->
                                 <div class="mb-3">
-                                    <label for="stage_name" class="form-label">{{ __('Nome d\'arte') }}</label>
+                                    <label for="stage_name" class="form-label">{{ __('stage name') }}</label>
                                     <input id="stage_name" type="text"
                                         class="form-control @error('stage_name') is-invalid @enderror" name="stage_name"
                                         value="{{ old('stage_name') }}" required>
@@ -71,7 +71,7 @@
                                 <!-- Pulsante di registrazione -->
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Registrati') }}
+                                        {{ __('sign up') }}
                                     </button>
                                 </div>
                             </form>

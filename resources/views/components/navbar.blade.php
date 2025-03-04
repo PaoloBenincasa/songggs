@@ -9,16 +9,16 @@
                 home
             </li>
         </a>
-        <a href="{{ route('songs.create') }}">
-            <li class="d-flex flex-column align-items-center navlink">
-                <i class="bi bi-pen-fill"></i>
-                write
-            </li>
-        </a>
         <a href="{{ route('search') }}">
             <li class="d-flex flex-column align-items-center navlink">
                 <i class="bi bi-search"></i>
                 search
+            </li>
+        </a>
+        <a href="{{ route('songs.create') }}">
+            <li class="d-flex flex-column align-items-center navlink">
+                <i class="bi bi-pen-fill"></i>
+                write
             </li>
         </a>
         <a href="{{ route('artists.index') }}">
@@ -34,14 +34,17 @@
                 @auth
                     <div class="d-flex flex-column">
                         <i class="bi bi-person-badge-fill"></i>
-
-                        <span>{{ Auth::user()->name }}</span>
+                        @php
+                            $name = Auth::user()->name;
+                            $shortName = strlen($name) > 7 ? substr($name, 0, 5) . '...' : $name;
+                        @endphp
+                        <span>{{ $shortName }}</span>
                     </div>
                 @endauth
                 @guest
                     <div class="d-flex flex-column">
                         <i class="bi bi-person-badge-fill"></i>
-                        <span>account</span>
+                        <span>user</span>
                     </div>
                 @endguest
             </button>
@@ -51,25 +54,26 @@
                 @auth
                     <li>
                         <a class="dropdown-item" href="{{ route('dashboard') }}">
-                            Dashboard
+                            dashboard
                         </a>
                     </li>
                     @if ($artist)
                         <li>
-                            <a class="dropdown-item" href="{{ route('artists.show', ['artist' => $artist->id]) }}">Profile
+                            <a class="dropdown-item" href="{{ route('artists.show', ['artist' => $artist->id]) }}">
+                                profile
                             </a>
                         </li>
                     @endif
                     <li>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="dropdown-item">Logout</button>
+                            <button type="submit" class="dropdown-item">logout</button>
                         </form>
                     </li>
                 @endauth
                 @guest
-                    <li><a class="dropdown-item" href="{{ route('login') }}">Log in</a></li>
-                    <li><a class="dropdown-item" href="{{ route('register') }}">Sign up</a></li>
+                    <li><a class="dropdown-item" href="{{ route('login') }}">log in</a></li>
+                    <li><a class="dropdown-item" href="{{ route('register') }}">sign up</a></li>
                 @endguest
             </ul>
 

@@ -13,37 +13,55 @@
 
         @if (auth()->check() && auth()->id() === $artist->user_id)
             <small class="mb-1 txtGrey">
-                you have {{ $publicCount }} public {{ Str::plural('song', $publicCount) }} 
-                and {{ $privateCount }} private {{ Str::plural('song', $privateCount) }} 
+                you have {{ $publicCount }} public {{ Str::plural('song', $publicCount) }}
+                and {{ $privateCount }} private {{ Str::plural('song', $privateCount) }}
             </small>
+
+            <div class="container">
+                <ul class="list-unstyled w-100">
+                    @foreach ($songs as $song)
+                        <li class="row mb-1">
+                            <div class="col-6 text-end">
+                                <a class="song-link" href="{{ route('songs.show', $song->id) }}">
+                                    {{ $song->title }}
+                                </a>
+                            </div>
+
+                            <div class="col-6 text-start">
+                                @if ($song->privacy)
+                                    <span class="songPrivacyPriv">private</span>
+                                @else
+                                    <span class="songPrivacyPub">public</span>
+                                @endif
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @else
+            <div class="container">
+                <ul class="list-unstyled w-100">
+                    @if ($publicCount > 0)
+                        <h6 class="txtGrey text-center">songs</h6>
+                    @else
+                    @endif
+                    @foreach ($songs as $song)
+                        <li class="row mb-1 justify-content-center">
+                            <div class="col-12 text-center">
+                                <a class="song-link" href="{{ route('songs.show', $song->id) }}">
+                                    {{ $song->title }}
+                                </a>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
-
-        <div class="container">
-            <ul class="list-unstyled w-100">
-                @foreach ($songs as $song)
-                    <li class="row mb-1">
-                        <div class="col-6 text-end">
-                            <a class="song-link" href="{{ route('songs.show', $song->id) }}">
-                                {{ $song->title }}
-                            </a>
-                        </div>
-
-                        <div class="col-6 text-start">
-                            @if ($song->privacy)
-                                <span class="songPrivacyPriv">private</span>
-                            @else
-                                <span class="songPrivacyPub">public</span>
-                            @endif
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
 
 
 
         @if (auth()->check() && auth()->id() === $artist->user_id)
-            <a href="{{ route('dashboard', $artist) }}" >
+            <a href="{{ route('dashboard', $artist) }}">
                 <button class="btn-contrast">
                     edit profile
                 </button>

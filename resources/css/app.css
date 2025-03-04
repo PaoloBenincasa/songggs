@@ -1,6 +1,7 @@
 @import 'bootstrap';
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
 /* @import 'bootstrap/dist/css/bootstrap.min.css'; */
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css");
 
@@ -12,7 +13,6 @@
 
 .fontLexend {
   font-family: "Lexend", serif !important;
-
 }
 
 .slot {
@@ -43,7 +43,7 @@ nav {
 }
 
 .navbar.scrolled {
-  background-color: var(--black) !important;
+  background-color: var(--blackest) !important;
   /* backdrop-filter: blur(28px) !important; */
 }
 
@@ -57,20 +57,17 @@ nav {
   position: relative !important;
 }
 
-.dropdown .dropdown-menu show {
+.dropdown .dropdown-menu.show {
   position: absolute !important;
-  left: 800px !important;
-  top: 100% !important;
-  transform: translateY(0) !important;
+  transform: translateX(-60%) !important;
 }
-
 
 .dropdown:hover {
   transform: translate(0.1px, -0.1px) !important;
   text-shadow: var(--newgreen) 1px 1px !important;
 }
 
-/* Rimuovi la freccia del dropdown */
+
 .dropdown-toggle::after {
   display: none !important;
 }
@@ -78,13 +75,9 @@ nav {
 
 .dropdown-item {
   color: var(--newblack) !important;
+  text-shadow: none !important;
 }
 
-.dropdown-item:hover {
-  color: var(--newgreen) !important;
-  /* transform: translate(0.1px, -0.1px) !important;
-  text-shadow: var(--newwhite) 1px 1px !important; */
-}
 
 .dropdown-toggle {
   color: var(--newwhite);
@@ -110,7 +103,6 @@ nav {
 
 .hero-content {
   background-color: transparent;
-  /* backdrop-filter: blur(18px); */
   position: absolute;
   top: 185px;
   right: 30px;
@@ -134,7 +126,7 @@ nav {
     width: 100%;
     height: 60%;
     background: linear-gradient(180deg, transparent 0%, rgba(37,40,41,0.79) 90%);
-    z-index: 1; /* Assicura che il gradiente sia sopra l'immagine */
+    z-index: 1;
   }
 
   .hero-content {
@@ -144,8 +136,6 @@ nav {
     right: auto !important;
     left: 50%;
     transform: translateX(-50%);
-    /* background-color: var(--black) 0.5;
-    backdrop-filter: blur(5px); */
     height: fit-content;
     z-index: 3;
   }
@@ -155,11 +145,31 @@ nav {
 a {
   text-decoration: none !important;
   color: var(--newwhite) !important;
+}
+
+.footer{
+  background-color: var(--blackest);
+  display: flex;
+  justify-content: center;
+}
+
+.email{
+  color: grey !important;
   transition: 0.3s ease-in-out;
+}
+
+.email:hover{
+  color: var(--newgreen) !important;
+}
+
+.account-body{
+  background-color: var(--black) !important;
+  color: var(--newwhite) !important;
 }
 
 .navlink {
   transition: 0.3s ease-in-out;
+  color: var(--newwhite) !important;
   width: 60px;
 }
 
@@ -197,19 +207,32 @@ a {
   border-radius: 3%;
   text-align: center;
   overflow: hidden;
-  border: solid 1px var(--newwhite);
   margin: 0 auto;
+  box-shadow: 0.5px 0.5px grey;
+  transition: 0.3s ease-in-out;
 }
 
 .artistCard:hover {
-  transform: scale(1.03);
+  transform: scale(1.05) ;
   background-color: var(--blackest);
-  border: solid 1px var(--newgreen);
+  box-shadow: 1px 1px var(--newgreen);
+}
+
+.artist-card-name {
+  color: var(--newwhite);
+  text-decoration: underline var(--newgreen);
+  transition: 0.3s ease-in-out;
+
+}
+
+.artistCard:hover .artist-card-name { 
+  color: var(--newgreen);
+  text-decoration: none;
 }
 
 .artist-link {
   color: grey !important;
-  transition: 0.3s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
 
 .artist-link:hover {
@@ -304,16 +327,7 @@ a {
   outline: none !important;
 }
 
-input {
-  outline: none !important;
 
-}
-
-input:focus {
-  border: 3px solid var(--newgreen) !important;
-  outline: none !important;
-
-}
 
 .home-link {
   color: var(--newgreen);
@@ -387,22 +401,12 @@ input:focus {
   align-items: center;
 }
 
-.songsWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.modal-body{
+  background-color: var(--black);
+  color: var(--newwhite);
 }
 
-.songCatalog {
-  width: 500px;
-  background-color: var(--blackest);
-  border-radius: 15px;
-}
-
-.song-embed {
-  width: 500px;
-}
-
-.artistsContainer {
-  background-color: var(--blackest);
+.light-mode{
+  background-color: var(--newwhite);
+  color: var(--black);
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Providers\FortifyServiceProvider;
+use Illuminate\Filesystem\FilesystemServiceProvider;
+
 return [
 
     /*
@@ -122,5 +125,7 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+   
 
 ];
