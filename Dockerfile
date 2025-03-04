@@ -22,14 +22,18 @@ WORKDIR /var/www
 # Copia i file del progetto
 COPY . .
 
-# Installa le dipendenze Laravel
-RUN composer install --no-dev --optimize-autoloader
-
 # Imposta i permessi
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+# Rendi eseguibile lo script start.sh
+RUN chmod +x /start.sh
+
+# Installa le dipendenze Laravel
+RUN composer install --no-dev --optimize-autoloader
 
 # Esponi la porta 9000 per PHP-FPM
 EXPOSE 9000
 
 # Comando di avvio
 CMD ["php-fpm"]
+
