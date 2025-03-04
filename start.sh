@@ -1,3 +1,7 @@
 #!/bin/sh
-nginx -g 'daemon off;' &  
-php-fpm
+
+# Avvia PHP-FPM in background
+php-fpm &
+
+# Avvia Nginx in foreground
+nginx -g 'daemon off;'
