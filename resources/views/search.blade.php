@@ -12,9 +12,7 @@
 
         @if ($search)
             <ul class="mt-3">
-                <div class="row">
                     @foreach ($artists as $artist)
-                    <div class="col-12 col-md-6 col-lg-4 mb-1">
                         <a href="{{ route('artists.show', $artist) }}">
                                 <li>
                                     <p class="song-link">
@@ -22,12 +20,8 @@
                                     </p>
                                 </li>
                             </a>
-                        </div>
                     @endforeach
-                </div>
-                <div class="row">
                     @foreach ($songs as $song)
-                    <div class="col-12 col-md-6 col-lg-4 mb-1">
                         <a href="{{ route('songs.show', $song) }}">
                                 <li>
                                     <p class="song-link">
@@ -35,9 +29,8 @@
                                     </p>
                                 </li>
                             </a>
-                        </div>
                     @endforeach
-                </div>
+              
             </ul>
         @endif
     </div>

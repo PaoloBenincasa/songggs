@@ -1,46 +1,35 @@
-# Usa un'immagine base con PHP e Apache
-FROM php:8.2-apache
+# Usa un'immagine PHP con estensioni necessarie per Laravel
+FROM php:8.2-cli
 
-# Installa le dipendenze necessarie per Laravel
+# Installa le dipendenze di sistema
 RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    zip \
-    unzip \
     git \
-    && docker-php-ext-install pdo_mysql zip
+    unzip \
+    libzip-dev \
+    libonig-dev \
+    libxml2-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-install pdo_mysql zip mbstring exif pcntl bcmath gd
 
-# Abilita il modulo Apache rewrite
-RUN a2enmod rewrite
-
-# Configura Apache per servire la directory public di Laravel
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
-
-# Configura ServerName per evitare avvisi
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-# Abilita i log di errore di Apache
-RUN echo "ErrorLog /var/log/apache2/error.log" >> /etc/apache2/apache2.conf
-RUN echo "LogLevel debug" >> /etc/apache2/apache2.conf
+# Copia il codice dell'applicazione nella cartella /var/www/html
+COPY . /var/www/html
 
 # Imposta la directory di lavoro
 WORKDIR /var/www/html
 
-# Copia i file del progetto nella cartella /var/www/html
-COPY . .
-
-# Imposta i permessi per le cartelle di storage e bootstrap/cache
-RUN chown -R www-data:www-data storage bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache
-
 # Installa Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Installa le dipendenze di Composer (senza dipendenze di sviluppo)
+# Installa le dipendenze PHP (senza dipendenze di sviluppo)
 RUN composer install --optimize-autoloader --no-dev
 
-# Esponi la porta 80
-EXPOSE 80
+# Imposta i permessi per le cartelle di storage e cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Avvia Apache
-CMD ["apache2-foreground"]
+# Esponi la porta 8000 (usata da php artisan serve)
+EXPOSE 8000
+
+# Comando di avvio: avvia il server Laravel
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
