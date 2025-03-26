@@ -3,7 +3,6 @@
         <h1 class="text-center undergreen fs-3">write your song!</h1>
         <div>
 
-            <!-- Messaggi di errore -->
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -19,7 +18,6 @@
                 enctype="multipart/form-data">
                 @csrf
 
-                <!-- titolo -->
                 <div class="row mb-3 w-100">
                     <div class="col-12 col-md-8 col-lg-6 mx-auto">
                         <label for="title" class="form-label txtGrey">title</label>
@@ -27,7 +25,6 @@
                             value="{{ old('title') }}" required>
                     </div>
                 </div>
-                {{-- testo --}}
                 <div class="row mb-3 w-100">
                     <div class="col-12 col-md-8 col-lg-6 mx-auto">
                         <label for="lyrics" class="form-label txtGrey">lyrics</label>
@@ -35,7 +32,6 @@
                     </div>
                 </div>
 
-                <!-- appunti sulla canzone -->
                 <div class="row mb-3 w-100">
                     <div class="col-12 col-md-8 col-lg-6 mx-auto"> 
                         <label for="notes" class="form-label txtGrey">notes</label>
@@ -43,7 +39,6 @@
                     </div>
                 </div>
 
-                <!-- link a spotify -->
                 <div class="row mb-3 w-100">
                     <div class="col-12 col-md-8 col-lg-6 mx-auto"> 
                         <label for="spotify_url" class="form-label txtGrey">spotify link</label>
@@ -52,7 +47,6 @@
                     </div>
                 </div>
 
-                <!-- MP3 -->
                 <div class="row mb-3 w-100">
                     <div class="col-12 col-md-8 col-lg-6 mx-auto"> 
                         <label for="mp3_audio" class="form-label txtGrey">MP3</label>
@@ -60,7 +54,6 @@
                     </div>
                 </div>
 
-                {{-- logica della privacy --}}
                 <div class="row mb-3 w-100">
                     <div class="col-12 col-md-8 col-lg-6 mx-auto text-start"> 
                         <div class="form-check">

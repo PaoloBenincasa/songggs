@@ -9,7 +9,6 @@
                             <form method="POST" action="{{ route('register') }}">
                                 @csrf
 
-                                <!-- Nome utente -->
                                 <div class="mb-3">
                                     <label for="name" class="form-label">{{ __('name') }}</label>
                                     <input id="name" type="text"
@@ -22,7 +21,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Email -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">{{ __('email') }}</label>
                                     <input id="email" type="email"
@@ -35,7 +33,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Password -->
                                 <div class="mb-3">
                                     <label for="password" class="form-label">{{ __('password') }}</label>
                                     <input id="password" type="password"
@@ -48,14 +45,12 @@
                                     @enderror
                                 </div>
 
-                                <!-- Conferma Password -->
                                 <div class="mb-3">
                                     <label for="password-confirm" class="form-label">{{ __('confirm password') }}</label>
                                     <input id="password-confirm" type="password" class="form-control"
                                         name="password_confirmation" required>
                                 </div>
 
-                                <!-- Nome d'arte -->
                                 <div class="mb-3">
                                     <label for="stage_name" class="form-label">{{ __('stage name') }}</label>
                                     <input id="stage_name" type="text"
@@ -68,7 +63,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Pulsante di registrazione -->
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('sign up') }}

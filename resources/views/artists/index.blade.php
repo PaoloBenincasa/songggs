@@ -3,7 +3,6 @@
         <h1 class="pt-5 fs-3 undergreen">Artists</h1>
         <div class="container">
             <div class="row justify-content-center gap-4 gap-md-5 pt-5 pb-5">
-                <!-- Aggiunto row e justify-content-center -->
                 @foreach ($artists as $artist)
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
                         <div class="d-flex flex-column align-items-center w-100">

@@ -13,7 +13,6 @@ class Artist extends Model
 
     protected $fillable = ['user_id', 'name', 'profile_picture', 'bio', 'location'];
 
-    // Artist.php
 public function user()
 {
     return $this->belongsTo(User::class, 'user_id');
