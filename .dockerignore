@@ -1,0 +1,41 @@
+# Ignora file di Git
+.git
+.gitignore
+
+# Ignora file specifici di Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+.docker/
+
+# Ignora dipendenze Node e PHP scaricate localmente
+node_modules/
+vendor/
+
+# Ignora file .env (usa le variabili d'ambiente di Render)
+.env
+.env.*
+!.env.example
+
+# Ignora file di storage locali (log, sessioni, cache)
+storage/framework/sessions/*
+storage/framework/cache/data/*
+storage/framework/views/*
+storage/logs/*.log
+storage/app/public/*
+!storage/app/public/.gitignore
+
+# Ignora file IDE e OS
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# Ignora eseguibili locali PHPUnit/Pest
+phpunit
+pest
+
+# Ignora file di Sail
+docker-compose.yml
+*.sublime-project
+*.sublime-workspace
