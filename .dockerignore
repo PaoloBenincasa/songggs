@@ -6,7 +6,7 @@
 .dockerignore
 Dockerfile
 docker-compose.yml
-.docker/
+# .docker/
 
 # Ignora dipendenze Node e PHP scaricate localmente
 node_modules/
