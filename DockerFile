@@ -46,6 +46,7 @@ RUN apk update && apk add --no-cache \
     supervisor \
     && rm -rf /var/cache/apk/*
 
+    
 # Installa le estensioni PHP necessarie per Laravel
 # gd richiede libpng, libjpeg, freetype
 # bcmath, pdo_mysql, zip, exif sono comuni per Laravel
