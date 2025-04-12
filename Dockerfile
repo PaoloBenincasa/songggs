@@ -73,7 +73,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --optimize-autoloader
 
 # Copia la configurazione di Nginx
-COPY .docker/nginx/default.conf /etc/nginx/http.d/default.conf
+COPY .docker/.nginx/default.conf /etc/nginx/http.d/default.conf
 # Rimuovi la configurazione di default di Nginx se presente
 RUN rm -f /etc/nginx/nginx.conf
 
