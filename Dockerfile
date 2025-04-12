@@ -5,7 +5,7 @@ RUN apk add --no-cache --update libzip-dev \
     freetype-dev \
     libjpeg-turbo-dev \
     postgresql-dev \
-    libpng-devv \
+    libpng-dev \
     linux-headers 
 
 # Installa le estensioni PHP
