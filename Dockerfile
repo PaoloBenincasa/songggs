@@ -32,8 +32,9 @@ RUN composer install --optimize-autoloader --no-dev
 # Cambia la proprietà della cartella storage (potrebbe essere necessario)
 # RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Genera la chiave dell'applicazione Laravel
-RUN php artisan key:generate --ansi
+# Genera la chiave dell'applicazione Laravel SENZA dipendere da .env
+RUN php -r "file_exists('.env') ? require __DIR__.'/bootstrap/app.php'->loadEnvironmentFrom('.env') : copy('.env.example', '.env');" \
+    && php artisan key:generate --ansi
 
 # Esegui le migrazioni (potrebbe essere necessario)
 # RUN php artisan migrate --force
@@ -67,7 +68,7 @@ RUN apk add --no-cache --update libzip \
     libpng
 
 # Copia i file dell'applicazione dal primo stage
-COPY --from=0 /var/www/html /var/www/html
+COPY --from=stage-0 /var/www/html /var/www/html
 
 # Copia gli asset compilati dallo stage del builder
 COPY --from=builder /app/public/build /var/www/html/public/build
