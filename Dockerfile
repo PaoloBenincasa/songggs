@@ -1,104 +1,82 @@
-# Dockerfile
+FROM php:8.3-fpm-alpine
 
-# --- Stage 1: Builder ---
-# Usa un'immagine Node per compilare gli asset
+# Installa le dipendenze di sistema necessarie per le estensioni PHP
+RUN apk add --no-cache --update libzip-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    postgresql-dev \
+    libpng-dev
+
+# Installa le estensioni PHP
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd bcmath zip exif sockets pdo pdo_pgsql
+
+# Imposta la directory di lavoro per l'applicazione Laravel
+WORKDIR /var/www/html
+
+# Copia i file dell'applicazione
+COPY . /var/www/html
+
+# Installa Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copia la configurazione di Apache (se necessario, altrimenti rimuovi)
+# COPY docker/apache2/default.conf /etc/apache2/sites-available/000-default.conf
+# RUN a2enmod rewrite
+# RUN service apache2 restart
+
+# Cambia la proprietà della cartella storage (potrebbe essere necessario)
+# RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Genera la chiave dell'applicazione Laravel
+RUN php artisan key:generate --ansi
+
+# Esegui le migrazioni (potrebbe essere necessario)
+# RUN php artisan migrate --force
+
+# Ottimizza l'autoload di Composer
+RUN composer install --optimize-autoloader --no-dev
+
+# --- Stage 2: Builder (Node.js per gli asset) ---
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Installa dipendenze necessarie per alcune build npm (opzionale, dipende dai tuoi asset)
-# RUN apk add --no-cache python3 make g++
-
-# Copia i file di definizione delle dipendenze
 COPY package.json package-lock.json ./
 
-# Installa le dipendenze npm
-RUN npm install 
-# Copia il resto del codice sorgente (necessario per Vite/Mix)
+RUN npm install
+
 COPY . .
 
 RUN chmod +x /app/node_modules/.bin/vite
 
-
 # Compila gli asset per la produzione
 RUN npm run build
 
-# Rimuovi node_modules dopo la build per pulizia (opzionale)
-# RUN rm -rf node_modules
+# --- Stage 3: Final Image ---
+FROM php:8.3-fpm-alpine
 
-# --- Stage 2: Applicazione Finale ---
-# Usa l'immagine PHP 8.2 FPM basata su Alpine
-FROM php:8.2-fpm-alpine AS app
+# Installa le dipendenze necessarie per l'ambiente di produzione (potrebbe essere un subset)
+RUN apk add --no-cache --update libzip \
+    freetype \
+    libjpeg-turbo \
+    libpng
 
-# Variabili d'ambiente per la configurazione non interattiva
-ENV ACCEPT_EULA=Y
+# Copia i file dell'applicazione dal primo stage
+COPY --from=0 /var/www/html /var/www/html
 
-# Aggiorna i pacchetti e installa le dipendenze di sistema richieste
-# build-base è necessario per compilare alcune estensioni
-# nginx per il web server
-# libzip, libpng, libjpeg, freetype per le estensioni PHP comuni
-# supervisor se vuoi gestire i processi con esso (alternativa a entrypoint.sh semplice)
-RUN apk update && apk add --no-cache \
-    build-base \
-    nginx \
-    libzip-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    supervisor \
-    && rm -rf /var/cache/apk/*
+# Copia gli asset compilati dallo stage del builder
+COPY --from=builder /app/public/build /var/www/html/public/build
 
-    
-# Installa le estensioni PHP necessarie per Laravel
-# gd richiede libpng, libjpeg, freetype
-# bcmath, pdo_mysql, zip, exif sono comuni per Laravel
-# sockets può servire per Livewire/Reverb o code future
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) \
-    gd \
-    bcmath \
-    pdo_pgsql \
-    zip \
-    exif \
-    sockets
+# Installa Composer (solo runtime, senza dev dependencies)
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer install --optimize-autoloader --no-dev --no-scripts
 
-# Installa Composer globalmente
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Cambia la proprietà della cartella storage (potrebbe essere necessario)
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Imposta la directory di lavoro
-WORKDIR /var/www/html
+# Espone la porta 80 (o quella che usi)
+EXPOSE 8000
 
-# Copia composer.json e composer.lock prima del resto per sfruttare la cache Docker
-COPY composer.json composer.lock ./
-
-# Installa le dipendenze PHP senza i pacchetti dev e ottimizza l'autoloader
-RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --optimize-autoloader
-
-# Copia la configurazione di Nginx
-COPY .docker/.nginx/default.conf /etc/nginx/http.d/default.conf
-# Rimuovi la configurazione di default di Nginx se presente
-RUN rm -f /etc/nginx/nginx.conf
-
-# Copia lo script di entrypoint e rendilo eseguibile
-COPY .docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Copia gli asset compilati dallo stage 'builder'
-COPY --from=builder /app/public/build ./public/build
-
-# Copia il resto dell'applicazione (assicurati che .dockerignore sia corretto!)
-COPY . .
-
-# Imposta i permessi corretti per Laravel (nginx/php-fpm usano www-data su Alpine)
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Esponi la porta 80 (quella su cui Nginx ascolterà)
-EXPOSE 80
-
-# Definisci l'entrypoint per avviare i servizi
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-# Comando di default (viene eseguito dall'entrypoint)
-# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"] # Se usi supervisor
-# Il nostro entrypoint.sh gestisce l'avvio, quindi non serve CMD qui
+# Comando per avviare il server PHP-FPM
+CMD ["php-fpm"]
