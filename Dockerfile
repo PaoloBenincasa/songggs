@@ -5,7 +5,8 @@ RUN apk add --no-cache --update libzip-dev \
     freetype-dev \
     libjpeg-turbo-dev \
     postgresql-dev \
-    libpng-dev
+    libpng-devv \
+    linux-headers 
 
 # Installa le estensioni PHP
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
