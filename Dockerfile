@@ -17,6 +17,9 @@ RUN npm install --omit=dev
 # Copia il resto del codice sorgente (necessario per Vite/Mix)
 COPY . .
 
+RUN chmod +x /app/node_modules/.bin/vite
+
+
 # Compila gli asset per la produzione
 RUN npm run build
 
