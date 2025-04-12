@@ -21,6 +21,9 @@ COPY . /var/www/html
 # Installa Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Installa le dipendenze PHP
+RUN composer install --optimize-autoloader --no-dev
+
 # Copia la configurazione di Apache (se necessario, altrimenti rimuovi)
 # COPY docker/apache2/default.conf /etc/apache2/sites-available/000-default.conf
 # RUN a2enmod rewrite
