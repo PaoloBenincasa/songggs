@@ -13,7 +13,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Installa le dipendenze npm
-RUN npm install --omit=dev 
+RUN npm install 
 # Copia il resto del codice sorgente (necessario per Vite/Mix)
 COPY . .
 
