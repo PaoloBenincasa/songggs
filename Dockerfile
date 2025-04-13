@@ -66,6 +66,9 @@ COPY .docker/.nginx/default.conf /etc/nginx/http.d/default.conf
 COPY .docker/.nginx/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Aggiungi TEMPORANEAMENTE questa riga per verificare le estensioni
+RUN php -m
+
 # Copia i file dell'applicazione dallo stage 'base'
 COPY --from=base /var/www/html /var/www/html
 
