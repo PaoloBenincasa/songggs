@@ -50,6 +50,9 @@ RUN npm run build
 # --- Stage 3: Final Image ---
 FROM php:8.3-fpm-alpine AS final
 
+RUN apk add --no-cache --update postgresql-dev libpq
+
+
 # Installa le dipendenze necessarie per l'ambiente di produzione (potrebbe essere un subset)
 RUN apk add --no-cache --update libzip \
     freetype \
@@ -66,11 +69,9 @@ COPY .docker/.nginx/default.conf /etc/nginx/http.d/default.conf
 COPY .docker/.nginx/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# INSERISCI QUI LA RIGA PER ABILITARE L'ESTENSIONE
+# Installa ed abilita l'estensione PostgreSQL
+RUN docker-php-ext-install pdo_pgsql
 RUN docker-php-ext-enable pdo_pgsql
-
-# FORZA LA CREAZIONE DEL FILE .INI (ulteriore tentativo)
-RUN echo "extension=pdo_pgsql.so" > /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini
 
 # Copia i file dell'applicazione dallo stage 'base'
 COPY --from=base /var/www/html /var/www/html
