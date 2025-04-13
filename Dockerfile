@@ -66,8 +66,11 @@ COPY .docker/.nginx/default.conf /etc/nginx/http.d/default.conf
 COPY .docker/.nginx/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Aggiungi TEMPORANEAMENTE questa riga per verificare le estensioni
-RUN php -m
+# INSERISCI QUI LA RIGA PER ABILITARE L'ESTENSIONE
+RUN docker-php-ext-enable pdo_pgsql
+
+# FORZA LA CREAZIONE DEL FILE .INI (ulteriore tentativo)
+RUN echo "extension=pdo_pgsql.so" > /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini
 
 # Copia i file dell'applicazione dallo stage 'base'
 COPY --from=base /var/www/html /var/www/html
