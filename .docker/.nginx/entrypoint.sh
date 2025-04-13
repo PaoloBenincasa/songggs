@@ -8,7 +8,7 @@ echo "Running entrypoint script..."
 
 # Esegui le migrazioni del database
 echo "Running database migrations..."
-php artisan migrate --force
+# php artisan migrate --force
 
 # Esegui le ottimizzazioni di Laravel (opzionale, ma consigliato)
 php artisan config:cache
