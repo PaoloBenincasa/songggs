@@ -134,13 +134,13 @@ COPY .nginx/default.conf /etc/nginx/http.d/default.conf
 COPY .nginx/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Copia i file dell'applicazione
+# Copia i file dell'applicazione dallo stage 'base'
 COPY --from=base /var/www/html /var/www/html
 
-# Copia gli asset compilati
+# Copia gli asset compilati dallo stage 'builder'
 COPY --from=builder /app/public/build /var/www/html/public/build
 
-# Cambia la proprietà della cartella storage
+# Cambia la proprietà della cartella storage (potrebbe essere necessario)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Espone la porta 80
