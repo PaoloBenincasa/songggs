@@ -74,76 +74,48 @@
 
 # # Comando per avviare il server PHP-FPM
 # CMD ["php-fpm"]
+
 FROM php:8.3-fpm-alpine AS base
 
-# Installa le dipendenze di sistema necessarie per le estensioni PHP
-RUN apk add --no-cache --update libzip-dev \
+# Installa dipendenze di sistema
+RUN apk add --no-cache --update \
+    libzip-dev \
     freetype-dev \
     libjpeg-turbo-dev \
     postgresql-dev \
     libpng-dev \
-    linux-headers
+    nginx \
+    linux-headers \
+    curl
 
-# Installa le estensioni PHP
+# Estensioni PHP
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd bcmath zip exif sockets pdo pdo_pgsql
 
-# Imposta la directory di lavoro per l'applicazione Laravel
+# Working dir
 WORKDIR /var/www/html
 
-# Copia i file dell'applicazione
+# Copia codice Laravel
 COPY . /var/www/html
 
 # Installa Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Installa le dipendenze PHP
+# Installa dipendenze PHP senza dev
 RUN composer install --optimize-autoloader --no-dev
 
-# Genera la chiave dell'applicazione Laravel SENZA dipendere da .env
-RUN php -r "file_exists('.env') ? require __DIR__.'/bootstrap/app.php'->loadEnvironmentFrom('.env') : copy('.env.example', '.env');" \
-    && php artisan key:generate --ansi
+# Copia config nginx
+COPY .docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# --- Stage 2: Builder (Node.js per gli asset) ---
-FROM node:20-alpine AS builder
+# Copia e abilita script entrypoint
+COPY .docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-WORKDIR /app
-
-COPY package.json package-lock.json ./
-
-RUN npm install
-
-COPY . .
-
-RUN chmod +x /app/node_modules/.bin/vite
-
-# Compila gli asset per la produzione
-RUN npm run build
-
-# --- Stage 3: Final Image ---
-FROM php:8.3-fpm-alpine AS final
-
-# Installa le dipendenze necessarie, incluso Nginx
-RUN apk add --no-cache --update nginx
-
-# Copia la configurazione di Nginx (PERCORSO CORRETTO)
-COPY .docker/.nginx/default.conf /etc/nginx/http.d/default.conf
-
-# Copia lo script di entrypoint (PERCORSO CORRETTO)
-COPY .docker/.nginx/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-# Copia i file dell'applicazione dallo stage 'base'
-COPY --from=base /var/www/html /var/www/html
-
-# Copia gli asset compilati dallo stage 'builder'
-COPY --from=builder /app/public/build /var/www/html/public/build
-
-# Cambia la proprietà della cartella storage (potrebbe essere necessario)
+# Permessi per Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Espone la porta 80
+# Espone la porta 80 (nginx)
 EXPOSE 80
 
-# Esegui lo script di entrypoint all'avvio del container
-ENTRYPOINT ["/entrypoint.sh"]
+# Usa lo script custom come entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
