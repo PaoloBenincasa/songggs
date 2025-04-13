@@ -74,7 +74,6 @@
 
 # # Comando per avviare il server PHP-FPM
 # CMD ["php-fpm"]
-
 FROM php:8.3-fpm-alpine AS base
 
 # Installa le dipendenze di sistema necessarie per le estensioni PHP
@@ -127,11 +126,11 @@ FROM php:8.3-fpm-alpine AS final
 # Installa le dipendenze necessarie, incluso Nginx
 RUN apk add --no-cache --update nginx
 
-# Copia la configurazione di Nginx
-COPY .nginx/default.conf /etc/nginx/http.d/default.conf
+# Copia la configurazione di Nginx (PERCORSO CORRETTO)
+COPY .docker/.nginx/default.conf /etc/nginx/http.d/default.conf
 
-# Copia lo script di entrypoint
-COPY .nginx/entrypoint.sh /entrypoint.sh
+# Copia lo script di entrypoint (PERCORSO CORRETTO)
+COPY .docker/.nginx/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Copia i file dell'applicazione dallo stage 'base'
