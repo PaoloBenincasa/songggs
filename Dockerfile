@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.3-fpm-alpine AS base
 
 # Installa le dipendenze di sistema necessarie per le estensioni PHP
 RUN apk add --no-cache --update libzip-dev \
@@ -6,7 +6,7 @@ RUN apk add --no-cache --update libzip-dev \
     libjpeg-turbo-dev \
     postgresql-dev \
     libpng-dev \
-    linux-headers 
+    linux-headers
 
 # Installa le estensioni PHP
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -24,23 +24,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Installa le dipendenze PHP
 RUN composer install --optimize-autoloader --no-dev
 
-# Copia la configurazione di Apache (se necessario, altrimenti rimuovi)
-# COPY docker/apache2/default.conf /etc/apache2/sites-available/000-default.conf
-# RUN a2enmod rewrite
-# RUN service apache2 restart
-
-# Cambia la proprietà della cartella storage (potrebbe essere necessario)
-# RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
 # Genera la chiave dell'applicazione Laravel SENZA dipendere da .env
 RUN php -r "file_exists('.env') ? require __DIR__.'/bootstrap/app.php'->loadEnvironmentFrom('.env') : copy('.env.example', '.env');" \
     && php artisan key:generate --ansi
 
-# Esegui le migrazioni (potrebbe essere necessario)
-# RUN php artisan migrate --force
-
-# Ottimizza l'autoload di Composer
-RUN composer install --optimize-autoloader --no-dev
+# Ottimizza l'autoload di Composer (ridondante, già fatto sopra)
+# RUN composer install --optimize-autoloader --no-dev
 
 # --- Stage 2: Builder (Node.js per gli asset) ---
 FROM node:20-alpine AS builder
@@ -59,7 +48,7 @@ RUN chmod +x /app/node_modules/.bin/vite
 RUN npm run build
 
 # --- Stage 3: Final Image ---
-FROM php:8.3-fpm-alpine
+FROM php:8.3-fpm-alpine AS final
 
 # Installa le dipendenze necessarie per l'ambiente di produzione (potrebbe essere un subset)
 RUN apk add --no-cache --update libzip \
@@ -67,20 +56,20 @@ RUN apk add --no-cache --update libzip \
     libjpeg-turbo \
     libpng
 
-# Copia i file dell'applicazione dal primo stage
-COPY --from=stage-0 /var/www/html /var/www/html
+# Copia i file dell'applicazione dallo stage 'base'
+COPY --from=base /var/www/html /var/www/html
 
-# Copia gli asset compilati dallo stage del builder
+# Copia gli asset compilati dallo stage 'builder'
 COPY --from=builder /app/public/build /var/www/html/public/build
 
-# Installa Composer (solo runtime, senza dev dependencies)
+# Installa Composer (solo runtime, senza dev dependencies e senza scripts)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --optimize-autoloader --no-dev --no-scripts
 
 # Cambia la proprietà della cartella storage (potrebbe essere necessario)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Espone la porta 80 (o quella che usi)
+# Espone la porta 8000
 EXPOSE 8000
 
 # Comando per avviare il server PHP-FPM
